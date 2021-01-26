@@ -1,36 +1,20 @@
-# Pasa tiempo con Python
+# Implementaciones Python
 
-## Indice
+## Índice
 
-- Historia
-- Dependencias
-- como Ejecutar
+- [Implementaciones Python](#implementaciones-python)
+  - [Índice](#índice)
+    - [Historia](#historia)
+    - [Proyectos Cargados](#proyectos-cargados)
 
-### Historia
-Todo comenzo cuando me enviaron un archivo .txt sin formato y necesitaba darle uno..
-el cual consistia e unir las lineas cada 3 saltos, y así poder tener unida la informacíon.
+### Historia 
 
-Ej:
-> Entrada:
->
-> requests
->
-> 1.0.1
->
-> 2.2.2
->
-> Salida:
->
-> Requests  1.0.1   2.2.2
+A medida de mi crecimiento profesional fui necesitando aprender nuevas tecnologías, como así tambien querer postular a nuevas oportunidades laborales. Para así ponerme a prueba, como támbien, poder agregar esos proyectos laborales en mi CV.
 
-### Dependencias
+Éste repositorio, almacena gran variedad de proyecto de todo tipo, sean grandes o pequeños. sencillos o complejos. toda aquella caracteristica que estan en el ojo de quien mire.
 
-> python
-> 
-> pipenv
+Python, es mi tercer lenguaje de programación, y en el cual he encontrado una gran afinidad, la cual espero que encuentren en este repositorio.
 
-### Como Ejecutar
+### Proyectos Cargados
 
-> pipenv install
->
-> pipenv shell / pipenv run python main.py
+- [pasaTiempo](/pasaTiempo/README.md)
