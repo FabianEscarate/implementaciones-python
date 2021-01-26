@@ -1,4 +1,4 @@
-# Pasa tiempo con Python
+# Pasa tiempo con String's
 
 ## Indice
 
