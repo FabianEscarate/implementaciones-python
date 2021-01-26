@@ -17,4 +17,4 @@ Python, es mi tercer lenguaje de programación, y en el cual he encontrado una g
 
 ### Proyectos Cargados
 
-- [pasaTiempo](/pasaTiempo/README.md)
+- [pasaTiempo](/pasaTiempo/)
