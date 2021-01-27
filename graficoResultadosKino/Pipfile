@@ -6,7 +6,9 @@ verify_ssl = true
 [dev-packages]
 
 [packages]
-pandas = "*"
+pandas = "==1.2.1"
+xlrd = "==2.0.1"
+openpyxl = "*"
 
 [requires]
 python_version = "3.7"

@@ -1,8 +1,10 @@
-
+from app.app import App
 
 def main():
-    lectura de 
-    pass
+    with App() as aplicacion:
+        aplicacion.run()
+
 
 if __name__ == "__main__":
     main()
+
