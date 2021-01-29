@@ -4,10 +4,18 @@ from cement.core.exc import CaughtSignal
 from .core.exc import DigimonDataError
 from .controllers.base import Base
 
+from .db.connection import ConnectionManager
+
 # configuration defaults
 CONFIG = init_defaults('digimondata')
 CONFIG['digimondata']['foo'] = 'bar'
 
+# preparacion de base de datos
+def config_db_manager(app):
+    app.log.info('configuracion y conexion a base de datos')
+    database_info_dict = app.config['DATABASE']
+
+    app.extend('db', ConnectionManager(database_info_dict))
 
 class DigimonData(App):
     """digimon-data primary application."""
@@ -16,7 +24,9 @@ class DigimonData(App):
         label = 'digimondata'
 
         # configuration defaults
-        config_defaults = CONFIG
+        # config_defaults = CONFIG
+        config_files = ['config/digimondata.yml']
+        
 
         # call sys.exit() on close
         exit_on_close = True
@@ -43,6 +53,11 @@ class DigimonData(App):
         # register handlers
         handlers = [
             Base
+        ]
+
+        # Hooks
+        hooks = [
+            ('post_setup', config_db_manager),
         ]
 
 
