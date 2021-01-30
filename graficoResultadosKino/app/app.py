@@ -15,5 +15,5 @@ class App:
     def run(self):
         # codigo del aplicativo
         excel_obj = Excel()
-        excel_obj.plot()
+        # generacion de grafico
         
