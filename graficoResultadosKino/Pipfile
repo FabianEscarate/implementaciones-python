@@ -9,6 +9,7 @@ verify_ssl = true
 pandas = "==1.2.1"
 xlrd = "==2.0.1"
 openpyxl = "*"
+matplotlib = "*"
 
 [requires]
 python_version = "3.7"

@@ -15,4 +15,5 @@ class App:
     def run(self):
         # codigo del aplicativo
         excel_obj = Excel()
-        pass
+        excel_obj.plot()
+        
