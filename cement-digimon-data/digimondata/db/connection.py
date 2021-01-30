@@ -1,5 +1,5 @@
 from pymongo import MongoClient
-from tinymongo import TinyMongoClient
+from .tinymongo_extension import TinyMongoConnection
 
 class ConnectionManager:
     Base = None
@@ -30,9 +30,9 @@ class ConnectionManager:
                     self.database['digimon-collection']
         else:
             # configuracion de manera 'localFile' con tinymongo
-            self.myclient = TinyMongoClient('database')
-            self.myclient.digimon_data
-            # database_list = self.myclient.list_database_names()
+            self.myclient = TinyMongoConnection('database')
+            # base de datos creada
+            database_list = self.myclient.list_database_names()
             if _dbname in database_list:
                 self.database = self.myclient[_dbname]
                 self.collections_names = self.database.list_collection_names()
@@ -43,6 +43,8 @@ class ConnectionManager:
                 self.collections_names = self.database.list_collection_names()
                 if not 'digimon-collection' in self.collections_names:
                     self.database['digimon-collection']
+                    self.database.tinydb.close()
+
 
     @staticmethod
     def makeConnection(self):
