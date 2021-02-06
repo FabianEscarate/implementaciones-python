@@ -5,17 +5,25 @@ from .core.exc import DigimonDataError
 from .controllers.base import Base
 
 from .db.connection import ConnectionManager
+from .utils.request_api import DigiAPI
 
 # configuration defaults
 CONFIG = init_defaults('digimondata')
 CONFIG['digimondata']['foo'] = 'bar'
 
-# preparacion de base de datos
+# preparacion de extension de base de datos
 def config_db_manager(app):
     app.log.info('configuracion y conexion a base de datos')
     database_info_dict = app.config['DATABASE']
 
     app.extend('db', ConnectionManager(database_info_dict))
+
+# preparacion de extension de API
+def config_api(app):
+    app.log.info('configuracion de conexion a API')
+    api_info_dict = app.config['API']
+
+    app.extend('api', DigiAPI(api_info_dict))
 
 class DigimonData(App):
     """digimon-data primary application."""
@@ -58,6 +66,7 @@ class DigimonData(App):
         # Hooks
         hooks = [
             ('post_setup', config_db_manager),
+            ('post_setup', config_api),
         ]
 
 

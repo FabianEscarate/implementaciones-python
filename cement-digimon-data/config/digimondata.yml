@@ -7,3 +7,6 @@ DATABASE:
   DBNAME : digimon-db
   USER : none
   PASS : none
+
+API:
+  URL: https://digimon-api.vercel.app/api/digimon

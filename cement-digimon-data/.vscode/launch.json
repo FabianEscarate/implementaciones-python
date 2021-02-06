@@ -8,7 +8,11 @@
             "name": "Python: Módulo",
             "type": "python",
             "request": "launch",
-            "module": "digimondata.main"
+            "module": "digimondata.main",
+            "args": [
+                "--get",
+                "100"
+            ]
         }
     ]
 }
