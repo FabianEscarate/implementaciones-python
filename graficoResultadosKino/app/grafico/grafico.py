@@ -15,5 +15,5 @@ class Grafica:
         ax = plt.gca()
         ax.plot([3.1, 2.2])
 
-        plt.draw()
+        plt.show(block=True)
         print("grafico")
