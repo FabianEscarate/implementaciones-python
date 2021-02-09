@@ -7,14 +7,14 @@ class ConnectionManager:
     database = None
 
     def __init__(self, config_dict):
-        _is_mongo = config_dict['is_mongo'] if 'is_mongo' in config_dict else False
+        self._is_mongo = config_dict['is_mongo'] if 'is_mongo' in config_dict else False
         _hostname = config_dict['HOSTNAME'] if 'HOSTNAME' in config_dict else None
         _port = config_dict['PORT'] if 'PORT' in config_dict else None
         _dbname = config_dict['DBNAME'] if 'DBNAME' in config_dict else None
         _user = config_dict['USER'] if 'USER' in config_dict else None
         _pass = config_dict['PASS'] if 'PASS' in config_dict else None
 
-        if _is_mongo:
+        if self._is_mongo:
             # configuracion con mongoDB
             self.myclient = MongoClient('mongodb://{hostname}:{port}'.format(hostname=_hostname, port=_port))
             database_list = self.myclient.list_database_names()
@@ -45,6 +45,15 @@ class ConnectionManager:
                     self.database['digimon-collection']
                     self.database.tinydb.close()
 
+    def open(self):
+        if self._is_mongo is False:
+            if self.database.tinydb._opened is False:
+                self.database = self.myclient[self.database.dbName]
+
+    def close(self):
+        if self._is_mongo is False:
+            if self.database.tinydb._opened:
+                self.database.tinydb.close() 
 
     def insert_data_in_collection(self, collection_name, data):
         # se realiza insercion a la base de datos
@@ -53,10 +62,13 @@ class ConnectionManager:
         collection = None
         data_inserted = None
         try:
+            self.open()
             collection = self.database[collection_name]
-            
-            data_inserted = collection.insert(data)
-            self.database.tinydb.close()
+            current_data_name = list(map(lambda x : x['name'], collection.find()))
+            data_to_insert = list(filter(lambda x: not x["name"] in current_data_name, data))
+            collection.insert(data_to_insert)
+            data_inserted = data_to_insert
+            self.close()
             result = {
                 "success": True,
                 "data": data_inserted

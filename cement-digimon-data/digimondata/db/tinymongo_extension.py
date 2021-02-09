@@ -21,5 +21,9 @@ class TinyMongoConnection(TinyMongoClient):
     
 class customTinyMongoDatabase(TinyMongoDatabase):
 
+    def __init__(self, name, folder, storage):
+        super().__init__(name, folder, storage)
+        self.dbName = name
+
     def list_collection_names(self):
         return self.tinydb.tables()

@@ -46,6 +46,7 @@ class Base(Controller):
         n_elements = 0
         response_insert = None
         response_result = None
+        exceptions = []
 
         if self.app.pargs.arg_element is None:
             self.app.args.print_help()
@@ -58,21 +59,40 @@ class Base(Controller):
                     n_elements = int(arg_element)                    
                 except Exception as _ex:
                     self.app.log.error("Invalid value, can't convert str to int")
+                    exceptions.append("Invalid value, can't convert str to int")
 
-            data_get_digi = self.app.api.get_digi(n_elements)
-            if data_get_digi['success'] is False:
-                self.app.log.error(data['message'])
-            else:
-                data = data_get_digi['data']
-                # insertar datos a la DB
-                response_insert = self.app.db.insert_data_in_collection('digimon-collection', data)
-                if response_insert['success'] is False:
-                    self.app.log.error('Error al insertar carga')
+            if len(exceptions) < 1:                    
+                data_get_digi = self.app.api.get_digi(n_elements)
+                if data_get_digi['success'] is False:
+                    self.app.log.error(data_get_digi['message'])
+                    response_result = {
+                        "success" : False,
+                        "message" : data_get_digi['message']
+                    }
                 else:
-                    data_inserted = response_insert['data']
+                    data = data_get_digi['data']
+                    # insertar datos a la DB
+                    response_insert = self.app.db.insert_data_in_collection('digimon-collection', data)
+                    if response_insert['success'] is False:
+                        self.app.log.error('Error al insertar carga')
+                        response_result = {
+                            "success" : False,
+                            "message" : response_insert['message']
+                        }
+                    else:
+                        data_inserted = response_insert['data']
+                        response_result = {
+                            "success" : True,
+                            "data" : data_inserted
+                        }
+            else:
+                response_result = {
+                    "success" : False,
+                    "message" : exceptions
+                }
 
-            headers = ['success','data_inserted']
-            self.app.render(response_insert, headers=headers)
+            print(response_result)
+            # self.app.render(response_insert)
 
 
     @ex(
@@ -89,6 +109,11 @@ class Base(Controller):
     )
     def deleteDb(self):
         """Example sub-command."""
-        path = fs.abspath('.')
-        self.app.log.info(path)
+        path, exist = fs.join_exists('.','database')
+        if exist is True:
+            for file in fs.os.listdir(path):
+                fs.os.remove(fs.join(path, file))
+
+            fs.os.removedirs(path)
+        self.app.log.info('Eliminacion de carpeta de dababase : {0}'.format(path))
         
