@@ -1,5 +1,5 @@
 
-from cement import Controller, ex
+from cement import Controller, ex, fs
 from cement.utils.version import get_version_banner
 from ..core.version import get_version
 
@@ -43,10 +43,13 @@ class Base(Controller):
 
     def _default(self):
         """Default action if no sub-command is passed."""
+        n_elements = 0
+        response_insert = None
+        response_result = None
+
         if self.app.pargs.arg_element is None:
             self.app.args.print_help()
-        else:
-            n_elements = 0
+        else:            
             arg_element = self.app.pargs.arg_element
             if arg_element == 'all':
                 n_elements = -1
@@ -56,37 +59,36 @@ class Base(Controller):
                 except Exception as _ex:
                     self.app.log.error("Invalid value, can't convert str to int")
 
-            self.app.log.info('Obtencion de {0} elementos'.format('todo' if n_elements < 0 else n_elements))
             data_get_digi = self.app.api.get_digi(n_elements)
-            if data['success'] is False:
-                self.app.log.info(data['message'])
+            if data_get_digi['success'] is False:
+                self.app.log.error(data['message'])
             else:
-                data = data['data']
+                data = data_get_digi['data']
                 # insertar datos a la DB
+                response_insert = self.app.db.insert_data_in_collection('digimon-collection', data)
+                if response_insert['success'] is False:
+                    self.app.log.error('Error al insertar carga')
+                else:
+                    data_inserted = response_insert['data']
 
+            headers = ['success','data_inserted']
+            self.app.render(response_insert, headers=headers)
 
 
     @ex(
-        help='example sub command1',
+        help='delete database',
 
         # sub-command level arguments. ex: 'digimondata command1 --foo bar'
         arguments=[
             ### add a sample foo option under subcommand namespace
-            ( [ '-f', '--foo' ],
-              { 'help' : 'notorious foo option',
-                'action'  : 'store',
-                'dest' : 'foo' } ),
+            # ( [ '-f', '--foo' ],
+            #   { 'help' : 'notorious foo option',
+            #     'action'  : 'store',
+            #     'dest' : 'foo' } ),
         ],
     )
-    def command1(self):
+    def deleteDb(self):
         """Example sub-command."""
-
-        data = {
-            'foo' : 'bar',
-        }
-
-        ### do something with arguments
-        if self.app.pargs.foo is not None:
-            data['foo'] = self.app.pargs.foo
-
-        self.app.render(data, 'command1.jinja2')
+        path = fs.abspath('.')
+        self.app.log.info(path)
+        

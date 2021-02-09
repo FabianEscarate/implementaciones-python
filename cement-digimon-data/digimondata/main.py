@@ -44,6 +44,7 @@ class DigimonData(App):
             'yaml',
             'colorlog',
             'jinja2',
+            'tabulate',
         ]
 
         # configuration handler
@@ -56,7 +57,7 @@ class DigimonData(App):
         log_handler = 'colorlog'
 
         # set the output handler
-        output_handler = 'jinja2'
+        output_handler = 'tabulate'
 
         # register handlers
         handlers = [

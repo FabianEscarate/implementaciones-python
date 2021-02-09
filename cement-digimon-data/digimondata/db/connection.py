@@ -46,6 +46,25 @@ class ConnectionManager:
                     self.database.tinydb.close()
 
 
-    @staticmethod
-    def makeConnection(self):
-        pass
+    def insert_data_in_collection(self, collection_name, data):
+        # se realiza insercion a la base de datos
+        # validar si existe collecion
+        result = False
+        collection = None
+        data_inserted = None
+        try:
+            collection = self.database[collection_name]
+            
+            data_inserted = collection.insert(data)
+            self.database.tinydb.close()
+            result = {
+                "success": True,
+                "data": data_inserted
+            }
+        except Exception as _ex:
+            result = {
+                "success" : False,
+                "message" : _ex
+            }
+
+        return result

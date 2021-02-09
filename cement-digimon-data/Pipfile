@@ -21,6 +21,7 @@ PyYAML = "*"
 pymongo = "*"
 tinydb = "*"
 tinymongo = "*"
+tabulate = "*"
 
 [requires]
 python_version = "3.7"
