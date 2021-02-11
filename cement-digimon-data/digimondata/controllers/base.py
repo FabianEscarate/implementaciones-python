@@ -96,6 +96,49 @@ class Base(Controller):
 
 
     @ex(
+        help='list a digimons on database, default priority [id, name, level]',
+        arguments=[
+            (
+                ['-i','--id'],
+                {
+                    'help' : 'get digimon by id',
+                    'action' : 'store',
+                    'dest' : 'arg_id'
+                }
+            ),
+            (
+                ['-n','--name'],
+                {
+                    'help' : 'get digimon by name',
+                    'action' : 'store',
+                    'dest' : 'arg_name'
+                }
+            ),
+            (
+                ['-l','--level'],
+                {
+                    'help' : 'get digimon by level',
+                    'action' : 'store',
+                    'dest' : 'arg_level'
+                }
+            )
+        ]
+    )
+    def listDigimon(self):
+        arg_id = self.app.pargs.arg_id if self.app.pargs.arg_id else None
+        arg_name = self.app.pargs.arg_name if self.app.pargs.arg_name else None
+        arg_level = self.app.pargs.arg_level if self.app.pargs.arg_level else None
+        
+        if arg_id is not None:
+            # obtener digimon por id
+        elif arg_name is not None:
+            # obtener digimon por nombre
+        elif arg_level is not None:
+            # obtener digimon por level
+        else:
+            # mostrar todos          
+
+    @ex(
         help='delete database',
 
         # sub-command level arguments. ex: 'digimondata command1 --foo bar'
