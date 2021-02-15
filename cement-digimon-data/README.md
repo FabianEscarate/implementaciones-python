@@ -1,11 +1,24 @@
 # obtencion, mantencion, ideas, etc. con informacion de digimon
 
-## Installation
+## History
+
+Me encanda Digimon, y ya existen muchos pokedeck's, pero pocos digideck's.
+
+Este proyecto es un inicio de lo que podria ser un Digideck. el cual lo construi bajo el siguiente FramWork:
+
+- cement
+
+## Requeriments
+
+- python 3.7
+- pipenv
+
+## Instalacion
 
 ```
-$ pip install -r requirements.txt
+$ pipenv install
 
-$ pip install setup.py
+$ pipenv run install setup.py
 ```
 
 ## Development
@@ -19,9 +32,9 @@ The following demonstrates setting up and working with a development environment
 ```
 ### create a virtualenv for development
 
-$ make virtualenv
+$ pipenv install
 
-$ source env/bin/activate
+$ pipenv shell
 
 
 ### run digimondata cli application

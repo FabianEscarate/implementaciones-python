@@ -44,55 +44,25 @@ class Base(Controller):
     def _default(self):
         """Default action if no sub-command is passed."""
         n_elements = 0
-        response_insert = None
         response_result = None
-        exceptions = []
 
         if self.app.pargs.arg_element is None:
             self.app.args.print_help()
         else:            
-            arg_element = self.app.pargs.arg_element
-            if arg_element == 'all':
-                n_elements = -1
-            else:
-                try:
-                    n_elements = int(arg_element)                    
-                except Exception as _ex:
-                    self.app.log.error("Invalid value, can't convert str to int")
-                    exceptions.append("Invalid value, can't convert str to int")
+            arg_element = self.app.pargs.arg_element if 'arg_element' in self.app.pargs else None
 
-            if len(exceptions) < 1:                    
-                data_get_digi = self.app.api.get_digi(n_elements)
-                if data_get_digi['success'] is False:
-                    self.app.log.error(data_get_digi['message'])
-                    response_result = {
-                        "success" : False,
-                        "message" : data_get_digi['message']
-                    }
-                else:
-                    data = data_get_digi['data']
-                    # insertar datos a la DB
-                    response_insert = self.app.db.insert_data_in_collection('digimon-collection', data)
-                    if response_insert['success'] is False:
-                        self.app.log.error('Error al insertar carga')
-                        response_result = {
-                            "success" : False,
-                            "message" : response_insert['message']
-                        }
-                    else:
-                        data_inserted = response_insert['data']
-                        response_result = {
-                            "success" : True,
-                            "data" : data_inserted
-                        }
+            data_get_digi = self.app.api.get_digi(arg_element)
+            
+            if data_get_digi['success'] is False:
+                self.app.log.error(data_get_digi['message'])
             else:
-                response_result = {
-                    "success" : False,
-                    "message" : exceptions
-                }
-
-            print(response_result)
-            # self.app.render(response_insert)
+                data = data_get_digi['data']
+                # insertar datos a la DB
+                response_insert = self.app.db.insert_data_in_collection('digimon-collection', data)
+                if response_insert['success'] is False:
+                    self.app.log.error('Error al insertar carga\n{0}'.format(response_insert["message"]))
+                else:                    
+                    self.app.render(response_insert['data'], headers="keys")
 
 
     @ex(
@@ -125,18 +95,17 @@ class Base(Controller):
         ]
     )
     def listDigimon(self):
+        response_result = None
         arg_id = self.app.pargs.arg_id if self.app.pargs.arg_id else None
         arg_name = self.app.pargs.arg_name if self.app.pargs.arg_name else None
         arg_level = self.app.pargs.arg_level if self.app.pargs.arg_level else None
         
-        if arg_id is not None:
-            # obtener digimon por id
-        elif arg_name is not None:
-            # obtener digimon por nombre
-        elif arg_level is not None:
-            # obtener digimon por level
+        response_result = self.app.db.Buscar(arg_id, arg_name, arg_level)    
+
+        if response_result["success"] is False:
+            self.app.log.error(response_result["message"])
         else:
-            # mostrar todos          
+            self.app.render(response_result["data"], headers="keys")
 
     @ex(
         help='delete database',

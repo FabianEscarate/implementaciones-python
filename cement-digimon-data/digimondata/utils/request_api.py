@@ -12,18 +12,34 @@ class DigiAPI:
 
     def get_digi(self, arg_element):
         result = {}
-        response = requests.get(self.__private_url_api)
-        if response.status_code != 200:
+        n_elements = 0
+        value_error = False
+        try:
+            if arg_element == 'all':
+                n_elements = -1
+            else:
+                n_elements = int(arg_element)                    
+        except ValueError as _ex:
+            value_error = True
+
+        if value_error:
             result = {
                 "success": False,
-                "message" : 'Status {0}, {1}'.format(response.status_code, response.text())
+                "message" : "Invalid value, can't convert str to int"
             }
         else:
-            data = list(response.json())
-            data = list(data[:arg_element]) if arg_element > -1 else data
-            result = {
-                "success": True,
-                "data": data
-            }
+            response = requests.get(self.__private_url_api)
+            if response.status_code != 200:
+                result = {
+                    "success": False,
+                    "message" : 'Status {0}, {1}'.format(response.status_code, response.text())
+                }
+            else:
+                data = list(response.json())
+                data = list(data[:n_elements]) if n_elements > -1 else data
+                result = {
+                    "success": True,
+                    "data": data
+                }
             
         return result

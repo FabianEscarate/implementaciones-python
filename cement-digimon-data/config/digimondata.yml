@@ -1,7 +1,7 @@
 digimondata:
 
 DATABASE:
-  is_mongo : false
+  is_mongo : true
   HOSTNAME : localhost
   PORT : 27017
   DBNAME : digimon-db

@@ -5,6 +5,7 @@ class ConnectionManager:
     Base = None
     myclient = None
     database = None
+    __private_collectionName = 'digimon-collection'
 
     def __init__(self, config_dict):
         self._is_mongo = config_dict['is_mongo'] if 'is_mongo' in config_dict else False
@@ -26,8 +27,8 @@ class ConnectionManager:
                 self.database = self.myclient[_dbname]
                 # creacion de collection
                 self.collections_names = self.database.list_collection_names()
-                if not 'digimon-collection' in self.collections_names:
-                    self.database['digimon-collection']
+                if not self.__private_collectionName in self.collections_names:
+                    self.database[self.__private_collectionName]
         else:
             # configuracion de manera 'localFile' con tinymongo
             self.myclient = TinyMongoConnection('database')
@@ -41,8 +42,8 @@ class ConnectionManager:
                 self.database = self.myclient[_dbname]
                 # creacion de collection
                 self.collections_names = self.database.list_collection_names()
-                if not 'digimon-collection' in self.collections_names:
-                    self.database['digimon-collection']
+                if not self.__private_collectionName in self.collections_names:
+                    self.database[self.__private_collectionName]
                     self.database.tinydb.close()
 
     def open(self):
@@ -67,7 +68,7 @@ class ConnectionManager:
             current_data_name = list(map(lambda x : x['name'], collection.find()))
             data_to_insert = list(filter(lambda x: not x["name"] in current_data_name, data))
             collection.insert(data_to_insert)
-            data_inserted = data_to_insert
+            data_inserted = list(data_to_insert)
             self.close()
             result = {
                 "success": True,
@@ -78,5 +79,38 @@ class ConnectionManager:
                 "success" : False,
                 "message" : _ex
             }
+
+        return result
+
+    def Buscar(self, id=None, name=None, level=None):
+        query = {}
+        result_data = None
+        result = {
+            "success" : False,
+            "message" : ''           
+        }
+        collection = self.database[self.__private_collectionName]
+
+        if id is not None:
+            # obtener digimon por id
+            query["_id"] = id
+            result_data = list(collection.find(query))
+        elif name is not None:
+            # obtener digimon por nombre
+            query["name"] = name
+            result_data = list(collection.find(query))
+        elif level is not None:
+            # obtener digimon por level
+            query["level"] = level
+            result_data = list(collection.find(query))
+        else:
+            # mostrar todos 
+            result_data = list(collection.find())
+
+        if len(result_data) == 0:
+            result["message"] = """no data finded or database it's empty"""
+        else:
+            result["success"] = True
+            result["data"] = result_data
 
         return result
