@@ -1,0 +1,12 @@
+digimondata:
+
+DATABASE:
+  is_mongo : true
+  HOSTNAME : localhost
+  PORT : 27017
+  DBNAME : digimon-db
+  USER : none
+  PASS : none
+
+API:
+  URL: https://digimon-api.vercel.app/api/digimon
