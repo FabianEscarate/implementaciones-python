@@ -1,0 +1,4 @@
+.vscode
+
+/**/*.pyc
+cement-digimon-data/digimondata/__pycache__/__init__.cpython-37.pyc
