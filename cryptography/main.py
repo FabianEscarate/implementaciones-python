@@ -3,6 +3,9 @@ import os
 from cryptography.fernet import Fernet
 from cryptography.hazmat.primitives import hashes
 from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
+# cryptoDome
+from Crypto.PublicKey import RSA
+
 
 keyPath = r'key.txt'
 
@@ -18,8 +21,17 @@ def getKey():
     return key
 
 def main():
-    key = getKey()
-    print(key)
+    key = base64.urlsafe_b64encode(getKey())
+    # decodeKey = base64.urlsafe_b64decode(key)
+    lengthKey = len(key)
+    # lengthKeyDecode = len(decodeKey)
+    random = os.urandom(32)
+    # print('decodeKey', decodeKey)
+    print('key', key)
+    print('length Key', lengthKey)
+    # print('length decodeKey', lengthKeyDecode)
+    print('random', random)
+
     message_to_encrypt = b'hola'
     f = Fernet(key)
     message_encrypt = f.encrypt(message_to_encrypt)
@@ -27,31 +39,53 @@ def main():
     print(message_to_encrypt)
     print(message_encrypt.decode("UTF-8"))
 
-def anotherMain():
+def FernetEncryipt():
     password = b"password"
     salt = os.urandom(16)
     kdf = PBKDF2HMAC(
         algorithm=hashes.SHA256(),
         length=32,
         salt=salt,
-        iterations=100000,
+        iterations=10000,
     )
     _kdf = kdf.derive(password)
-    generateKey = Fernet().generate_key()
+    kdf = PBKDF2HMAC(
+        algorithm=hashes.SHA256(),
+        length=32,
+        salt=salt,
+        iterations=10000,
+    )
+    valid_kdf = kdf.verify(b'password',_kdf)
+    # generateKey = Fernet().generate_key()
     key = base64.urlsafe_b64encode(_kdf)
-    # decodekey = base64.urlsafe_b64decode(_kdf)
+    decodekey = base64.urlsafe_b64decode(key)
     f = Fernet(key)
     token = f.encrypt(b"Secret message!")
     print('salt', salt)
-    print('generateKey', generateKey)
+    print('salt Encode', base64.urlsafe_b64encode(salt))
+    print('valid_kdf', valid_kdf)
+    # print('generateKey', generateKey)
     print('key', key.decode('UTF-8'))
     print(len(key.decode('UTF-8')))
     print('kdf', kdf)
     print('_kdf', _kdf)
-    # print('decodekey', decodekey)
-    print(token.decode('UTF-8'))
+    print('encode_kdf', base64.urlsafe_b64encode(_kdf))
+    print('length decode _kdf', len(_kdf))
+    print('decodekey', decodekey)
+    print('=== decode key length:{0}==='.format(len(decodekey)))
+    for x in decodekey:
+        print(hex(x))
+    print('==================')
+    print('signing key:', decodekey[:16])
+    print('signing encode key:', base64.urlsafe_b64encode(decodekey[:16]))
+    print('encryption key:', decodekey[16:])
+    print('encryption encode key:', base64.urlsafe_b64encode(decodekey[16:]))
+    print('encrypyted message', token.decode('UTF-8'))
 
 
+def cryptoDome():
+    pass
 
 if __name__ == "__main__":
-    main()
+    # main()
+    FernetEncryipt()
