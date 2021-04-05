@@ -1,4 +1,6 @@
-
+# vscode
 **/.vscode/
+# Pipfile
 **/*.lock
-*/**/__pycache__/
+
+
