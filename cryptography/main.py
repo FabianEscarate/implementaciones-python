@@ -1,6 +1,7 @@
 import base64
 import os
 from cryptography.fernet import Fernet
+from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives import hashes
 from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
 # cryptoDome
@@ -40,30 +41,31 @@ def main():
     print(message_encrypt.decode("UTF-8"))
 
 def FernetEncryipt():
-    password = b"password"
+    password = b"Biwiser.PlanOk"
     salt = os.urandom(16)
     kdf = PBKDF2HMAC(
         algorithm=hashes.SHA256(),
         length=32,
         salt=salt,
         iterations=10000,
+        backend=default_backend()
     )
     _kdf = kdf.derive(password)
-    kdf = PBKDF2HMAC(
-        algorithm=hashes.SHA256(),
-        length=32,
-        salt=salt,
-        iterations=10000,
-    )
-    valid_kdf = kdf.verify(b'password',_kdf)
+    # kdf = PBKDF2HMAC(
+    #     algorithm=hashes.SHA256(),
+    #     length=32,
+    #     salt=salt,
+    #     iterations=10000,
+    # )
+    # valid_kdf = kdf.verify(b'password',_kdf)
     # generateKey = Fernet().generate_key()
     key = base64.urlsafe_b64encode(_kdf)
     decodekey = base64.urlsafe_b64decode(key)
     f = Fernet(key)
-    token = f.encrypt(b"Secret message!")
+    token = f.encrypt(b"btarazona@planok.com<:>fescarate")
     print('salt', salt)
     print('salt Encode', base64.urlsafe_b64encode(salt))
-    print('valid_kdf', valid_kdf)
+    # print('valid_kdf', valid_kdf)
     # print('generateKey', generateKey)
     print('key', key.decode('UTF-8'))
     print(len(key.decode('UTF-8')))
@@ -82,10 +84,18 @@ def FernetEncryipt():
     print('encryption encode key:', base64.urlsafe_b64encode(decodekey[16:]))
     print('encrypyted message', token.decode('UTF-8'))
 
+def encriptacion_plan_ok():
+    llave = 'ZH5TCd-nPddQzngab3krBeJETPCbb0-hjiVrklvV7Mk='
+    email = 'fescarate@biwiser.com<:>fescarate'
+
+    token = Fernet(llave.encode()).encrypt(email.encode())
+
+    print('token', token)
 
 def cryptoDome():
     pass
 
 if __name__ == "__main__":
     # main()
-    FernetEncryipt()
+    # FernetEncryipt()
+    encriptacion_plan_ok()
