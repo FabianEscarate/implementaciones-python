@@ -1,0 +1,1 @@
+select prueba from transaccional_10
