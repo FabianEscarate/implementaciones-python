@@ -41,7 +41,7 @@ def main():
     print(message_encrypt.decode("UTF-8"))
 
 def FernetEncryipt():
-    password = b"Biwiser.PlanOk"
+    password = b"lolo"
     salt = os.urandom(16)
     kdf = PBKDF2HMAC(
         algorithm=hashes.SHA256(),
@@ -62,7 +62,7 @@ def FernetEncryipt():
     key = base64.urlsafe_b64encode(_kdf)
     decodekey = base64.urlsafe_b64decode(key)
     f = Fernet(key)
-    token = f.encrypt(b"btarazona@planok.com<:>fescarate")
+    token = f.encrypt(b"test@test.com<:>asdf")
     print('salt', salt)
     print('salt Encode', base64.urlsafe_b64encode(salt))
     # print('valid_kdf', valid_kdf)
@@ -86,7 +86,7 @@ def FernetEncryipt():
 
 def encriptacion_plan_ok():
     llave = 'ZH5TCd-nPddQzngab3krBeJETPCbb0-hjiVrklvV7Mk='
-    email = 'fescarate@biwiser.com<:>fescarate'
+    email = 'tes@est.com<:>adsf'
 
     token = Fernet(llave.encode()).encrypt(email.encode())
 
