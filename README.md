@@ -20,3 +20,4 @@ Python, es mi tercer lenguaje de programación, y en el cual he encontrado una g
 - [pasaTiempo](/pasaTiempo/)
 - [cement-digimondata](/cement-digimon-data/)
 - [multiProcessing-Example](/multiProcessing-Example/)
+- [Cryptography with Fernet](/cryptography/)
