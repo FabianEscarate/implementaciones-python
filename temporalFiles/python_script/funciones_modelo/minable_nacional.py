@@ -55,5 +55,5 @@ def minable_nacional():
 
     df_minable_example = pd.DataFrame(mydataset)
 
-    df_minable_example.to_csv(getPath(FILES.canal_20_file_1), index=False)
+    df_minable_example.to_csv(getPath(FILES.canal_10_anyName).format('prueba_asdf'), index=False)
     return df_minable_example
