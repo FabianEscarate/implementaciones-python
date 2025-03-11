@@ -22,3 +22,4 @@ Python, es mi tercer lenguaje de programación, y en el cual he encontrado una g
 - [multiProcessing-Example](/multiProcessing-Example/)
 - [Json Example](/jsonExample/)
 - [Cryptography with Fernet](/cryptography/)
+- [Testing with Pytest](/testingPytest/)
