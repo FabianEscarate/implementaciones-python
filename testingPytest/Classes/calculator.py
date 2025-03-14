@@ -2,11 +2,11 @@ import math
 
 class Calculator():
   @staticmethod
-  def sum(a:int, b:int):
+  def add(a:int, b:int):
     return a + b
   
   @staticmethod
-  def sustract(a:int, b:int):
+  def subtract(a:int, b:int):
     return a - b
   
   @staticmethod
@@ -14,5 +14,5 @@ class Calculator():
     return a * b
   
   @staticmethod
-  def division(a:int, b:int):
+  def divide(a:int, b:int):
     return a / b
